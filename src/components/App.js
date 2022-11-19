@@ -6,6 +6,8 @@ import LoginPage from './LoginPage'
 import RegisterPage from './RegisterPage'
 import MainPage from './MainPage'
 import MyContext from '../contexts/myContext'
+import CashEntry from './CashEntry'
+import CashOut from './CashOut'
 
 export default function App(){
     const [userData,setUserData] = React.useState('')
@@ -19,6 +21,8 @@ export default function App(){
                         <Route path='/' element = {<LoginPage/>} />
                         <Route path='/singup' element = {<RegisterPage/>} />
                         <Route path='/main' element = {<MainPage/>} />
+                        <Route path='/cashout' element = {<CashOut/>} />
+                        <Route path='/cashentry' element = {<CashEntry/>} />
                     </Routes>
                 </Body>
             </BrowserRouter>
