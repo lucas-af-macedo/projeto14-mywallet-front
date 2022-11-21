@@ -52,7 +52,7 @@ export default function EditCashOut (){
         if (userData===''){
             navigate('/')
         }
-    },[])
+    },[navigate, userData])
 
     return(
         <Container>

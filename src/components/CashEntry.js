@@ -17,7 +17,7 @@ export default function CashEntry(){
         if (userData===''){
             navigate('/')
         }
-    },[])
+    },[navigate, userData])
 
 
     function submit(event){

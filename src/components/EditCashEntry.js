@@ -52,7 +52,7 @@ export default function EditCashEntry (){
         if (userData===''){
             navigate('/')
         }
-    },[])
+    },[navigate, userData])
 
     return(
         <Container>

@@ -51,7 +51,7 @@ export default function CashOut(){
         if (userData===''){
             navigate('/')
         }
-    },[])
+    },[navigate, userData])
 
     return(
         <Container>
