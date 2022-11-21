@@ -1,26 +1,61 @@
-import styled from 'styled-components'
-import React from 'react'
-import leave from '../assets/img/leave.png'
-import plus from '../assets/img/plus.png'
-import minus from '../assets/img/minus.png'
-import Wallet from './Wallet'
+import styled from 'styled-components';
+import React,{useEffect, useContext} from 'react';
+import leave from '../assets/img/leave.png';
+import plus from '../assets/img/plus.png';
+import minus from '../assets/img/minus.png';
+import Wallet from './Wallet';
 import { useNavigate } from "react-router-dom";
+import MyContext from '../contexts/myContext';
+import axios from 'axios';
 
 export default function MainPage(){
+    const [transation, setTransation] = React.useState([]);
+    const {userData} = useContext(MyContext);
     const navigate = useNavigate();
-    let a = 1
+    const [balance, setBalance] = React.useState(0.00);
+
+    useEffect(()=>{
+        const URL = 'http://localhost:5000/transations';
+        const config = {
+            headers:{
+                authorization: `Bearer ${userData.token}`
+            }
+        };
+        const request = axios.get(URL, config)
+        request.then(answer => {
+            setTransation(answer.data)
+            calculeBalance(answer.data)
+        });
+        request.catch(error => {
+            navigate('/')
+        });
+    },[navigate, userData]);
+    
+    function calculeBalance(transationTemporary){
+        let balanceTemporary = 0.00
+        for (let i=0; i<transationTemporary.length ;i++){
+            if (transationTemporary[i].type==='entry'){
+                balanceTemporary += transationTemporary[i].value;
+            }else{
+                balanceTemporary -= transationTemporary[i].value;
+            }
+        }
+        setBalance(balanceTemporary)
+    }
+
     return(
         <Container>
             <Welcome>
-                <h2>Olá, fulano</h2>
+                <h2>Olá, {userData.name}</h2>
                 <img src={leave} alt='leave'/>
             </Welcome>
             <WalletBox>
-                {a
-                    ?<MessageWallet>
+                {transation.length
+                    ?<Wallet transation={transation} balance={balance}/>
+                    :<MessageWallet>
                         <h3>Não há registros de entrada ou saída</h3>
                     </MessageWallet>
-                    :<Wallet></Wallet>}
+                }
                 
             </WalletBox>
             <OptionsBox>

@@ -22,7 +22,7 @@ export default function CashOut(){
         const body = {
             ...form,
             value: Number(form.value),
-            type: 'entry'
+            type: 'out'
         }
         const config = {
             headers: {
