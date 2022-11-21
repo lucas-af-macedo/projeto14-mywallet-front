@@ -136,7 +136,7 @@ const  WalletBox = styled.div`
     width: 100%;
     margin-top: 18px;
     height: calc(100vh - 215px);
-    min-height: 300px;
+    min-height: 150px;
     display: flex;
     justify-content: center;
     align-items: center;

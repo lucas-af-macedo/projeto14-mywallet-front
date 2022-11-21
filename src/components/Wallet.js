@@ -82,6 +82,7 @@ const Balance = styled.div`
 
 const Transations  = styled.div`
     height: calc(100vh - 250px);
+    min-height: 115px;
     display: flex;
     flex-direction: column;
     overflow: scroll;
@@ -91,7 +92,6 @@ const Transations  = styled.div`
 const Transation = styled.div`
     margin-top: 7px;
     margin-bottom: 7px;
-    height: 100%;
     display: flex;
     justify-content: space-between;
     padding-left: 12px;
