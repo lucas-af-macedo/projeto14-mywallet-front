@@ -27,8 +27,9 @@ export default function RegisterPage(){
     function PostRegister(event){
         setDisabled(true)
         event.preventDefault();
-        const URL = ``
+        const URL = `http://localhost:5000/sign-up`
         const body = {...form}
+        delete body.confirmPassword
         const request = axios.post(URL, body);
         request.then(answer => {
             navigate('/')
@@ -52,7 +53,6 @@ export default function RegisterPage(){
     function handleForm (e) {
         if (e.target.name === 'confirmPassword'){
             if (e.target.value !== form.password){
-                console.log(e)
                 e.target.setCustomValidity("Password dont math");
             }else{
                 e.target.setCustomValidity("");

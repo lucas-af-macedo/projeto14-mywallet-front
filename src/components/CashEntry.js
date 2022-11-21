@@ -1,16 +1,63 @@
 import styled from 'styled-components'
-import React, { useContext } from 'react'
+import React,{useState,useContext} from 'react'
+import MyContext from '../contexts/myContext'
+import axios from 'axios';
+import { useNavigate } from "react-router-dom";
 
 export default function CashEntry(){
+    const navigate = useNavigate()
+    const {userData} = useContext(MyContext)
+    const [disabled,setDisabled] = useState(false)
+    const [form, setForm] = useState({
+        value: undefined,
+        description: ""
+    });
+
+
+    function submit(event){
+        event.preventDefault();
+        setDisabled(true)
+
+        const URL = `http://localhost:5000/transation`
+        const body = {
+            ...form,
+            value: Number(form.value),
+            type: 'entry'
+        }
+        const config = {
+            headers: {
+                Authorization: `Bearer ${userData.token}`
+            }
+        }
+
+        const request = axios.post(URL, body, config);
+        request.then(answer => {
+            navigate('/main')
+        });
+        request.catch(erro => {
+            setDisabled(false)
+        })
+    }
+
+    function handleForm (e) {
+        setForm({
+        ...form,
+        [e.target.name]: e.target.value,
+        }) 
+        console.log(typeof e.target.value)
+    }
+
+
+
     return(
         <Container>
             <Title>
                 <h3>Nova entrada</h3>
             </Title>
             
-            <form>
-                <input placeholder='Valor' step='0.01' type='number' name='valor' required/>
-                <input placeholder='Descricao' type='text' name='text' required/>
+            <form onSubmit={submit}>
+                <input placeholder='Valor' step='0.01' type='number' name='value'  onChange={handleForm} disabled={disabled} required/>
+                <input placeholder='Descricao' type='text' name='description'  onChange={handleForm} disabled={disabled} required/>
                 <button type="submit"><p>Entrar</p></button>
 		    </form>
         </Container>

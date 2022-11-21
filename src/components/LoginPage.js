@@ -20,19 +20,20 @@ export default function LoginPage(){
     const getUser = localStorage.getItem("user") 
     if(getUser!==null){
         setUserData(JSON.parse(getUser))
-        navigate('/hoje')
+        navigate('/main')
     }
     function PostLogin(event){
         setDisabled(true)
         event.preventDefault();
-        const URL = `https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/login`
+        const URL = `http://localhost:5000/sign-in`
         const body = {...form}
+        console.log(body)
         const request = axios.post(URL, body);
         request.then(answer => {
             setUserData(answer.data)
             const user = JSON.stringify(answer.data)
             localStorage.setItem("user", user)
-            navigate('/hoje')
+            navigate('/main')
 		});
         request.catch(erro => {
             setDisabled(false)

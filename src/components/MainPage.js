@@ -1,11 +1,13 @@
 import styled from 'styled-components'
-import React, { useContext } from 'react'
+import React from 'react'
 import leave from '../assets/img/leave.png'
 import plus from '../assets/img/plus.png'
 import minus from '../assets/img/minus.png'
 import Wallet from './Wallet'
+import { useNavigate } from "react-router-dom";
 
 export default function MainPage(){
+    const navigate = useNavigate();
     let a = 1
     return(
         <Container>
@@ -22,14 +24,14 @@ export default function MainPage(){
                 
             </WalletBox>
             <OptionsBox>
-                <Option>
+                <Option onClick={() => navigate('/cashentry')}>
                     <img src={plus} alt='plus'/>
                     <div>
                         <h3>Nova</h3>
                         <h3>entrada</h3>
                     </div>
                 </Option>
-                <Option>
+                <Option onClick={() => navigate('/cashout')}>
                     <img src={minus} alt='minus'/>
                     <div>
                         <h3>Nova</h3>
