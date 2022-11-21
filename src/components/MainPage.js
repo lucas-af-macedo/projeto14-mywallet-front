@@ -10,7 +10,7 @@ import axios from 'axios';
 
 export default function MainPage(){
     const [transation, setTransation] = React.useState([]);
-    const {userData} = useContext(MyContext);
+    const {userData, setUserData} = useContext(MyContext);
     const navigate = useNavigate();
     const [balance, setBalance] = React.useState(0.00);
 
@@ -43,15 +43,38 @@ export default function MainPage(){
         setBalance(balanceTemporary)
     }
 
+    function exit(){
+        localStorage.removeItem('user')
+        setUserData('')
+        navigate('/')
+    }
+
+    function response(){
+        const URL = 'http://localhost:5000/transations';
+        const config = {
+            headers:{
+                authorization: `Bearer ${userData.token}`
+            }
+        };
+        const request = axios.get(URL, config)
+        request.then(answer => {
+            setTransation(answer.data)
+            calculeBalance(answer.data)
+        });
+        request.catch(error => {
+            navigate('/')
+        });
+    }
+
     return(
         <Container>
             <Welcome>
                 <h2>Olá, {userData.name}</h2>
-                <img src={leave} alt='leave'/>
+                <img src={leave} alt='leave' onClick={exit} />
             </Welcome>
             <WalletBox>
                 {transation.length
-                    ?<Wallet transation={transation} balance={balance}/>
+                    ?<Wallet transation={transation} balance={balance} response={response} />
                     :<MessageWallet>
                         <h3>Não há registros de entrada ou saída</h3>
                     </MessageWallet>
@@ -102,6 +125,8 @@ const Welcome = styled.div`
     font-weight: 600;
     img{
         cursor: pointer;
+        width: 23px;
+        height: 31px;
     }
 `
 

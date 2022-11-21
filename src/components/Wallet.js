@@ -2,27 +2,51 @@ import styled from 'styled-components';
 import React,{useContext, useRef, useEffect} from 'react';
 import MyContext from '../contexts/myContext';
 import dayjs from 'dayjs';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
-export default function Wallet({transation, balance}){
+export default function Wallet({transation, balance, response}){
     const {userData} = useContext(MyContext)
+    const navigate = useNavigate()
 
+    function remove(item){
+        const URL = `http://localhost:5000/transation/${item._id}`
+        const config = {
+            headers: {
+                authorization: `Bearer ${userData.token}`
+            }
+        }
+        const request = axios.delete(URL, config)
+        request.then(answer => {
+            response()
+        })
+        request.catch(error => {
+            navigate('/')
+        })
+    }
+
+    function edit(item){
+        if(item.type==='out'){
+            navigate(`/edit-transation-out/${item._id}`)
+        }else{
+            navigate(`/edit-transation-entry/${item._id}`)
+        }    
+    }
 
     return(
         <Container>  
             <Transations>
                 {transation.map((item,index)=>
-                    <>
-                        <Transation key={index}>
+                        <Transation key={item._id}>
                             <Description>
                                 <h3>{dayjs(item.date).format('DD/MM')}</h3>
-                                <h4>{item.description}</h4>
+                                <h4 onClick={()=>edit(item)} >{item.description}</h4>
                             </Description>
                             <Value type={item.type}>
                                 <h3>{item.value.toFixed(2)}</h3>
-                                <h4>x</h4>
+                                <h4 onClick={()=>remove(item)} >x</h4>
                             </Value>
-                        </Transation>
-                    </>)
+                        </Transation>)
                 }
             </Transations>
             <Balance balance={balance}>
@@ -67,7 +91,7 @@ const Transations  = styled.div`
 const Transation = styled.div`
     margin-top: 7px;
     margin-bottom: 7px;
-    height: 25px;
+    height: 100%;
     display: flex;
     justify-content: space-between;
     padding-left: 12px;
@@ -84,6 +108,7 @@ const Description = styled.div`
         color: #C6C6C6;
     }
     h4{
+        max-width: calc(100% - 70px);
         margin-left: 8px;
         font-family: 'Raleway', sans-serif;
     }

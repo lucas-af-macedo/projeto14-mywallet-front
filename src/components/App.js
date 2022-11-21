@@ -8,6 +8,8 @@ import MainPage from './MainPage'
 import MyContext from '../contexts/myContext'
 import CashEntry from './CashEntry'
 import CashOut from './CashOut'
+import EditCashOut from './EditCashOut'
+import EditCashEntry from './EditCashEntry'
 
 export default function App(){
     const [userData,setUserData] = React.useState('')
@@ -23,6 +25,8 @@ export default function App(){
                         <Route path='/main' element = {<MainPage/>} />
                         <Route path='/cashout' element = {<CashOut/>} />
                         <Route path='/cashentry' element = {<CashEntry/>} />
+                        <Route path='/edit-transation-out/:transationId' element = {<EditCashOut/> } />
+                        <Route path='/edit-transation-entry/:transationId' element = {<EditCashEntry/> } />
                     </Routes>
                 </Body>
             </BrowserRouter>

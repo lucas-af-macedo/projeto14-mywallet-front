@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import React,{useState,useContext} from 'react'
+import React,{useState,useContext,useEffect} from 'react'
 import MyContext from '../contexts/myContext'
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
@@ -46,6 +46,13 @@ export default function CashOut(){
         }) 
     }
 
+    
+    useEffect(()=>{
+        if (userData===''){
+            navigate('/')
+        }
+    },[])
+
     return(
         <Container>
             <Title>
@@ -55,7 +62,7 @@ export default function CashOut(){
             <form onSubmit={submit}>
                 <input placeholder='Valor' step='0.01' type='number' name='value' onChange={handleForm} disabled={disabled} required/>
                 <input placeholder='Descricao' type='text' name='description' onChange={handleForm} disabled={disabled} required/>
-                <button type="submit"><p>Entrar</p></button>
+                <button type="submit"><p>Salvar saida</p></button>
 		    </form>
         </Container>
     )

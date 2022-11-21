@@ -2,9 +2,11 @@ import styled from 'styled-components'
 import React,{useState,useContext,useEffect} from 'react'
 import MyContext from '../contexts/myContext'
 import axios from 'axios';
+import { useParams } from 'react-router-dom';
 import { useNavigate } from "react-router-dom";
 
-export default function CashEntry(){
+export default function EditCashOut (){
+    const params = useParams()
     const navigate = useNavigate()
     const {userData} = useContext(MyContext)
     const [disabled,setDisabled] = useState(false)
@@ -13,22 +15,15 @@ export default function CashEntry(){
         description: ""
     });
 
-    useEffect(()=>{
-        if (userData===''){
-            navigate('/')
-        }
-    },[])
-
 
     function submit(event){
         event.preventDefault();
         setDisabled(true)
 
-        const URL = `http://localhost:5000/transation`
+        const URL = `http://localhost:5000/transation/${params.transationId}`
         const body = {
             ...form,
             value: Number(form.value),
-            type: 'entry'
         }
         const config = {
             headers: {
@@ -36,7 +31,7 @@ export default function CashEntry(){
             }
         }
 
-        const request = axios.post(URL, body, config);
+        const request = axios.put(URL, body, config);
         request.then(answer => {
             navigate('/main')
         });
@@ -50,21 +45,25 @@ export default function CashEntry(){
         ...form,
         [e.target.name]: e.target.value,
         }) 
-        console.log(typeof e.target.value)
     }
 
-
+    
+    useEffect(()=>{
+        if (userData===''){
+            navigate('/')
+        }
+    },[])
 
     return(
         <Container>
             <Title>
-                <h3>Nova entrada</h3>
+                <h3>Editar saida</h3>
             </Title>
             
             <form onSubmit={submit}>
-                <input placeholder='Valor' step='0.01' type='number' name='value'  onChange={handleForm} disabled={disabled} required/>
-                <input placeholder='Descricao' type='text' name='description'  onChange={handleForm} disabled={disabled} required/>
-                <button type="submit"><p>Salvar entrada</p></button>
+                <input placeholder='Valor' step='0.01' type='number' name='value' onChange={handleForm} disabled={disabled} required/>
+                <input placeholder='Descricao' type='text' name='description' onChange={handleForm} disabled={disabled} required/>
+                <button type="submit"><p>Atualizar saida</p></button>
 		    </form>
         </Container>
     )
